@@ -1,0 +1,52 @@
+#include <iostream>
+#include <conio.h>
+#include <stdlib.h>
+
+using namespace std;
+
+int main()
+{
+    int opcion;
+                                                                //MENU DE OPCIONES
+    cout << "1. Cargar archivo de ataque en memoria" << endl;
+    cout << "2. Mostrar ataque cargado" << endl;
+    cout << "3. Crear un archivo de ataque nuevo" << endl;
+    cout << "4. Corregit un registro del archivo" << endl;
+    cout << "5. Corregir un registro en memoria" << endl;
+    cout << "6. Guardar memoria en un archivo nuevo" << endl;
+    cout << "7. Visualizar un archivo de ataque en html" << endl<<endl;
+        cin>>opcion;
+
+        switch(opcion){         //SELECCION DE OPCIONES
+            case 1:
+                    cout<<"Opcion aun no programada";
+                break;
+
+            case 2:
+                    cout<<"Opcion aun no programada";
+                break;
+
+            case 3:
+                    cout<<"Opcion aun no programada";
+                break;
+
+            case 4:
+                    cout<<"Opcion aun no programada";
+                break;
+
+            case 5:
+                    cout<<"Opcion aun no programada";
+                break;
+
+            case 6:
+                    cout<<"Opcion aun no programada";
+                break;
+
+            case 7:
+                    cout<<"Opcion aun no programada";
+                break;
+        }
+
+    getch();
+    return 0;
+}
