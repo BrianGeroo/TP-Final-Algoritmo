@@ -5,6 +5,7 @@
 
 #include "memoria.h"
 #include "operaciones.h"
+#include "archivos.h"
 
 using namespace std;
 
