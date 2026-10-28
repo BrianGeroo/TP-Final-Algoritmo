@@ -1,165 +1,118 @@
 #include <iostream>
 #include <cstdio>
-#include <cmath>
-#include <cstdlib>
-
 #include "memoria.h"
-#include "operaciones.h"
 #include "archivos.h"
 
 using namespace std;
 
-void CrearArchivo(char nombreArc[],OrdenArchivo memoria[FILAS][COLUMNAS])
+void CrearArchivo(const char nombreArc[])
 {
-
-    FILE*f1;
-
-    if(f1=fopen(nombreArc, "wb")){
-
-     char queres = 's';
-
-    //SE MODIFICAN LOS REGISTROS, SI QUIERES EDITAR OTRO SE REINICIA EL CICLO
-        while (queres == 's' || queres == 'S')
-        {
-            OrdenArchivo orden;
-
-        cout<<"Seleccione los registros que quiere modificar"<<endl<<endl;
-
-                        cout<<"espera: ";
-            cin>>orden.espera;
-                        cout<<"coordenada x: ";
-            cin>>orden.x;
-                        cout<<"coordenada y: ";
-            cin>>orden.y;
-                        cout<<"soltar granada 1?: ";
-            cin>>orden.soltarGranada1;
-                        cout<<"soltar granada 2?: ";
-            cin>>orden.soltarGranada2;
-                        cout<<"Ataque Kamikaze?: ";
-            cin>>orden.ataqueKamikaze;
-                        cout<<"Aterrizar?: ";
-            cin>>orden.aterrizaje;
-                        cout<<"Despegar?: ";
-            cin>>orden.despegue;
-                        cout<<"Siguiente coordenada x: ";
-            cin>>orden.siguientex;
-                        cout<<"Siguiente coordenada y: ";
-            cin>>orden.siguientey;
-            cout<<endl<<endl;
-
-                memoria[orden.x][orden.y] = orden;
-    //SE ALMACENA EL STRUCT EN LA POSICION DE LA GRILLA
-
-    fwrite(&orden, sizeof(OrdenArchivo), 1, f1);
-
-            cout << endl;
-            cout << "Deseas agregar otra orden? (s/n): ";
-            cin >> queres;
-            cout << endl;
-            cout<<"*******************************************"<<endl;
-        }
-
-        fclose(f1);
-            cout<<"FINALIZO EL GUARDADO"<<endl<<endl;
-        }
-
-    else{
-        cout<<"ERROR";
+    FILE* f1 = fopen(nombreArc, "wb");
+    if (f1 == NULL)
+    {
+        cout << "ERROR: No se pudo crear el archivo." << endl;
+        return;
     }
-    return;
+
+    char queres = 's';
+    while (queres == 's' || queres == 'S')
+    {
+        OrdenArchivo orden;
+
+        cout << "\n--- Ingresar Datos de la Orden ---" << endl;
+        cout << "Coordenada X: "; cin >> orden.x;
+        cout << "Coordenada Y: "; cin >> orden.y;
+        cout << "Espera: "; cin >> orden.espera;
+        cout << "Soltar granada 1? (0=no, 1=si): "; cin >> orden.soltarGranada1;
+        cout << "Soltar granada 2? (0=no, 1=si): "; cin >> orden.soltarGranada2;
+        cout << "Ataque Kamikaze? (0=no, 1=si): "; cin >> orden.ataqueKamikaze;
+        cout << "Aterrizaje? (0=no, 1=si): "; cin >> orden.aterrizaje;
+        cout << "Despegue? (0=no, 1=si): "; cin >> orden.despegue;
+        cout << "Siguiente coordenada X (-1 si es fin): "; cin >> orden.siguientex;
+        cout << "Siguiente coordenada Y (-1 si es fin): "; cin >> orden.siguientey;
+
+        fwrite(&orden, sizeof(OrdenArchivo), 1, f1);
+
+        cout << "\nDeseas agregar otra orden? (s/n): ";
+        cin >> queres;
+    }
+
+    fclose(f1);
+    cout << "\nArchivo creado y guardado con exito.\n" << endl;
 }
 
-void EditarArchivo(char nombreArc[], OrdenArchivo memoria[FILAS][COLUMNAS]){
+void EditarArchivo(const char nombreArc[])
+{
+    FILE* f2 = fopen(nombreArc, "r+b");
+    if (f2 == NULL)
+    {
+        cout << "ERROR: No se pudo abrir el archivo para edicion." << endl;
+        return;
+    }
 
-    FILE* f2;
     int cordx, cordy;
-    char era = 'n';
-    int posicion = 0;
+    cout << "Elija las coordenadas a editar en el archivo:" << endl;
+    cout << "Coordenada X: "; cin >> cordx;
+    cout << "Coordenada Y: "; cin >> cordy;
 
-    OrdenArchivo coordenada;
     OrdenArchivo orden;
+    int posicion = 0;
+    bool encontrado = false;
 
-    if(f2 = fopen(nombreArc, "r+b")){
-
-        while(era != 's' && era != 'S'){
-
-        cout<<"Elija las coordenadas a editar:"<<endl;
-        cout<<"Coordenada X: ";
-        cin>>cordx;
-        cout<<"Coordenada Y: ";
-        cin>>cordy;
-
-            coordenada = memoria[cordx][cordy]; //DEVUELVE LOS DATOS DE LA POSICION AL STRUCT EDITABLE
-
-        cout<<endl;
-
-            cout << "========== REGISTRO ==========" << endl;
-            cout << "X: " << coordenada.x << endl;
-            cout << "Y: " << coordenada.y << endl;
-            cout << "Espera: " << coordenada.espera << endl;
-            cout << "Soltar Granada 1: " << coordenada.soltarGranada1 << endl;
-            cout << "Soltar Granada 2: " << coordenada.soltarGranada2 << endl;
-            cout << "Ataque Kamikaze: " << coordenada.ataqueKamikaze << endl;
-            cout << "Aterrizaje: " << coordenada.aterrizaje << endl;
-            cout << "Despegue: " << coordenada.despegue << endl;
-            cout << "Siguiente X: " << coordenada.siguientex << endl;
-            cout << "Siguiente Y: " << coordenada.siguientey << endl;
-            cout << "===============================" << endl;
-
-            cout<<"Esa es la coordenada correcta?(s/n): ";
-            cin>>era;
-            cout<<endl<<endl;
+    // Buscar el registro directamente en el archivo binario
+    while (fread(&orden, sizeof(OrdenArchivo), 1, f2) == 1)
+    {
+        if (orden.x == cordx && orden.y == cordy)
+        {
+            encontrado = true;
+            break;
         }
+        posicion++;
+    }
 
-    //BUSCA LA POSICION DEL ARCHIVO EN MEMORIA
-        posicion =0;
-
-        while(fread(&orden, sizeof(OrdenArchivo), 1, f2) == 1){
-
-            if(orden.x == cordx && orden.y == cordy){
-                break;
-            }
-            posicion++;
-        }
-                    cout << "========== REGISTRO EDITABLE ==========" << endl;
-            cout << "X: ";
-                cin>>coordenada.x;
-            cout << "Y: ";
-                cin>>coordenada.y;
-            cout << "Espera: ";
-                cin>>coordenada.espera;
-            cout << "Soltar Granada 1: ";
-                cin>>coordenada.soltarGranada1;
-            cout << "Soltar Granada 2: ";
-                cin>>coordenada.soltarGranada2;
-            cout << "Ataque Kamikaze: ";
-                cin>>coordenada.ataqueKamikaze;
-            cout << "Aterrizaje: ";
-                cin>>coordenada.aterrizaje;
-            cout << "Despegue: ";
-                cin>>coordenada.despegue;
-            cout << "Siguiente X: ";
-                cin>>coordenada.siguientex;
-            cout << "Siguiente Y: ";
-                cin>>coordenada.siguientey;
-            cout << "===============================" << endl;
-
-                memoria[coordenada.x][coordenada.y] = coordenada;
-
-        // Volver al comienzo del registro encontrado
-        fseek(f2, posicion * sizeof(OrdenArchivo), SEEK_SET);
-
-        // Reemplazar el registro
-        fwrite(&coordenada, sizeof(OrdenArchivo), 1, f2);
-
-        cout << endl << "Registro modificado correctamente." << endl;
-
+    if (!encontrado)
+    {
+        cout << "ERROR: No se encontro ningun registro con esas coordenadas en el archivo." << endl;
         fclose(f2);
+        return;
     }
 
-    else{
-        cout<<"ERROR 2";
+    cout << "\n========== REGISTRO ENCONTRADO ==========" << endl;
+    cout << "X: " << orden.x << " | Y: " << orden.y << endl;
+    cout << "Espera: " << orden.espera << endl;
+    cout << "Granada 1: " << orden.soltarGranada1 << " | Granada 2: " << orden.soltarGranada2 << endl;
+    cout << "Kamikaze: " << orden.ataqueKamikaze << " | Aterrizaje: " << orden.aterrizaje << " | Despegue: " << orden.despegue << endl;
+    cout << "Siguiente X: " << orden.siguientex << " | Siguiente Y: " << orden.siguientey << endl;
+    cout << "=========================================" << endl;
+
+    char confirmar;
+    cout << "Desea modificar este registro? (s/n): ";
+    cin >> confirmar;
+
+    if (confirmar != 's' && confirmar != 'S')
+    {
+        cout << "Modificacion cancelada." << endl;
+        fclose(f2);
+        return;
     }
+
+    cout << "\nIngrese los nuevos valores:" << endl;
+    cout << "Nueva Espera: "; cin >> orden.espera;
+    cout << "Soltar Granada 1? (0/1): "; cin >> orden.soltarGranada1;
+    cout << "Soltar Granada 2? (0/1): "; cin >> orden.soltarGranada2;
+    cout << "Ataque Kamikaze? (0/1): "; cin >> orden.ataqueKamikaze;
+    cout << "Aterrizaje? (0/1): "; cin >> orden.aterrizaje;
+    cout << "Despegue? (0/1): "; cin >> orden.despegue;
+    cout << "Siguiente X: "; cin >> orden.siguientex;
+    cout << "Siguiente Y: "; cin >> orden.siguientey;
+
+    // Volver a la posicion exacta del registro
+    fseek(f2, posicion * sizeof(OrdenArchivo), SEEK_SET);
+    fwrite(&orden, sizeof(OrdenArchivo), 1, f2);
+
+    cout << "\nRegistro en archivo modificado correctamente." << endl;
+    fclose(f2);
+}
 
 void GuardarMemoriaEnArchivo(const char nombreArc[], Orden memoria[FILAS][COLUMNAS])
 {
@@ -172,14 +125,12 @@ void GuardarMemoriaEnArchivo(const char nombreArc[], Orden memoria[FILAS][COLUMN
 
     int registrosGuardados = 0;
 
-    // Recorremos la matriz 200x200 buscando celdas ocupadas
     for (int x = 0; x < FILAS; x++)
     {
         for (int y = 0; y < COLUMNAS; y++)
         {
             if (memoria[x][y].celdaOcupada)
             {
-                // Convertimos de Orden (RAM) a OrdenArchivo (Disco)
                 OrdenArchivo reg;
                 reg.x = x;
                 reg.y = y;
@@ -192,7 +143,6 @@ void GuardarMemoriaEnArchivo(const char nombreArc[], Orden memoria[FILAS][COLUMN
                 reg.siguientex = memoria[x][y].siguientex;
                 reg.siguientey = memoria[x][y].siguientey;
 
-                // Guardamos el registro en el archivo binario
                 fwrite(&reg, sizeof(OrdenArchivo), 1, f3);
                 registrosGuardados++;
             }
@@ -202,6 +152,4 @@ void GuardarMemoriaEnArchivo(const char nombreArc[], Orden memoria[FILAS][COLUMN
     fclose(f3);
     cout << "\nArchivo '" << nombreArc << "' creado con exito." << endl;
     cout << "Se guardaron " << registrosGuardados << " registros en total." << endl;
-}
-    
 }

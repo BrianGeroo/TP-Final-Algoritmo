@@ -1,13 +1,15 @@
 #ifndef ARCHIVOS_H
 #define ARCHIVOS_H
 
-//PROTOTIPO DE CREACION DE ARCHIVOS
-void CrearArchivo(char nombreArc[],OrdenArchivo memoria[FILAS][COLUMNAS]);
+#include "memoria.h"
 
-//PROTOTIPO DE EDICION DE ARCHIVOS
-void EditarArchivo(char nombreArc[], OrdenArchivo memoria[FILAS][COLUMNAS]);
+// PROTOTIPO DE CREACION DE ARCHIVOS (Operacion 3)
+void CrearArchivo(const char nombreArc[]);
 
-// PROTOTIPO PARA GUARDAR LA MEMORIA EN UN NUEVO ARCHIVO
+// PROTOTIPO DE EDICION DE ARCHIVOS (Operacion 4)
+void EditarArchivo(const char nombreArc[]);
+
+// PROTOTIPO PARA GUARDAR LA MEMORIA EN UN NUEVO ARCHIVO (Operacion 6)
 void GuardarMemoriaEnArchivo(const char nombreArc[], Orden memoria[FILAS][COLUMNAS]);
 
-#endif //ARCHIVOS_H
+#endif // ARCHIVOS_H

@@ -4,7 +4,7 @@ CXXFLAGS = -Wall -Wextra -std=c++11
 TARGET = sistema_dron
 
 # Todos los archivos .cpp del proyecto
-SRCS = main.cpp memoria.cpp operaciones.cpp archivos.cpp visualizaciones.cpp html.cpp
+SRCS = main.cpp memoria.cpp operaciones.cpp archivos.cpp visualizacion.cpp html.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 # Regla principal

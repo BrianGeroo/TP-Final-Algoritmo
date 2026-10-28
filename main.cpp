@@ -52,14 +52,14 @@ int main()
                 cout << "\n--- CREAR ARCHIVO DE ATAQUE NUEVO ---\n";
                 cout << "Ingrese la ruta y nombre del archivo a crear: ";
                 cin >> ruta;
-                CrearArchivo(ruta, memoria);
+                CrearArchivo(ruta);
                 break;
 
             case 4:
                 cout << "\n--- CORREGIR REGISTRO DEL ARCHIVO ---\n";
                 cout << "Ingrese la ruta y nombre del archivo a editar: ";
                 cin >> ruta;
-                EditarArchivo(ruta, memoria);
+                EditarArchivo(ruta);
                 break;
 
             case 5:

@@ -1,3 +1,8 @@
+#include <iostream>
+#include "memoria.h"
+#include "visualizaciones.h"
+
+using namespace std;
 
 void mostrarAtaqueCargado()
 {
@@ -87,14 +92,11 @@ void mostrarAtaqueCargado()
     } while (opcion != 'S' && opcion != 's');
 }
 
-
 void corregirRegistroMemoria()
 {
     int x, y;
 
-    cout << "\n===== CORREGIR REGISTRO EN MEMORIA ====="
-         << endl;
-
+    cout << "\n===== CORREGIR REGISTRO EN MEMORIA =====" << endl;
     cout << "Ingrese la coordenada X: ";
     cin >> x;
 
@@ -103,15 +105,13 @@ void corregirRegistroMemoria()
 
     if (!estaEnRango(x, y))
     {
-        cout << "ERROR: Las coordenadas estan fuera de rango."
-             << endl;
+        cout << "ERROR: Las coordenadas estan fuera de rango." << endl;
         return;
     }
 
     if (!memoria[x][y].celdaOcupada)
     {
-        cout << "ERROR: No existe un registro en esa celda."
-             << endl;
+        cout << "ERROR: No existe un registro en esa celda." << endl;
         return;
     }
 
@@ -166,15 +166,13 @@ void corregirRegistroMemoria()
     cout << "Siguiente Y (-1 si no hay siguiente): ";
     cin >> sy;
 
-    // Validaciones basicas antes de modificar
     if ((g1 != 0 && g1 != 1) ||
         (g2 != 0 && g2 != 1) ||
         (kamikaze != 0 && kamikaze != 1) ||
         (aterrizaje != 0 && aterrizaje != 1) ||
         (despegue != 0 && despegue != 1))
     {
-        cout << "ERROR: Las acciones deben ser 0 o 1."
-             << endl;
+        cout << "ERROR: Las acciones deben ser 0 o 1." << endl;
         return;
     }
 
@@ -182,33 +180,28 @@ void corregirRegistroMemoria()
 
     if (!sinSiguiente && !estaEnRango(sx, sy))
     {
-        cout << "ERROR: La siguiente posicion no es valida."
-             << endl;
+        cout << "ERROR: La siguiente posicion no es valida." << endl;
         return;
     }
 
     if ((sx == POS_NULA) != (sy == POS_NULA))
     {
-        cout << "ERROR: Ambas coordenadas siguientes deben "
-             << "ser -1 o ambas deben ser validas." << endl;
+        cout << "ERROR: Ambas coordenadas siguientes deben ser -1 o ambas deben ser validas." << endl;
         return;
     }
 
     if (despegue && (g1 || g2 || kamikaze))
     {
-        cout << "ERROR: El despegue no puede tener ataques."
-             << endl;
+        cout << "ERROR: El despegue no puede tener ataques." << endl;
         return;
     }
 
     if (aterrizaje && kamikaze)
     {
-        cout << "ERROR: No puede haber aterrizaje y kamikaze "
-             << "en el mismo registro." << endl;
+        cout << "ERROR: No puede haber aterrizaje y kamikaze en el mismo registro." << endl;
         return;
     }
 
-    // Actualizar la celda existente
     o.espera = espera;
     o.soltarGranada1 = g1;
     o.soltarGranada2 = g2;
