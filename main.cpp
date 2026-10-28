@@ -4,7 +4,8 @@
 #include "memoria.h"
 #include "operaciones.h"
 #include "archivos.h"
-#include "visualizaciones.h" 
+#include "visualizaciones.h"
+#include "html.h"
 
 using namespace std;
 
@@ -66,11 +67,17 @@ int main()
                 break;
 
             case 6:
-                cout << "\n[EN DESARROLLO] Opcion 6 aun no programada.\n";
+                cout << "\n--- GUARDAR MEMORIA A DISCO ---\n";
+                cout << "Ingrese nombre del nuevo archivo binario (ej: backup.dat): ";
+                cin >> ruta;
+                GuardarMemoriaEnArchivo(ruta, memoria);
                 break;
 
             case 7:
-                cout << "\n[EN DESARROLLO] Opcion 7 aun no programada.\n";
+                cout << "\n--- EXPORTAR A HTML ---\n";
+                cout << "Ingrese nombre del archivo web (ej: mapa.html): ";
+                cin >> ruta;
+                visualizarEnHTML(ruta, memoria);
                 break;
 
             case 8:
