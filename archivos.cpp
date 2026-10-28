@@ -160,4 +160,48 @@ void EditarArchivo(char nombreArc[], OrdenArchivo memoria[FILAS][COLUMNAS]){
     else{
         cout<<"ERROR 2";
     }
+
+void GuardarMemoriaEnArchivo(const char nombreArc[], Orden memoria[FILAS][COLUMNAS])
+{
+    FILE* f3 = fopen(nombreArc, "wb");
+    if (f3 == NULL)
+    {
+        cout << "ERROR: No se pudo crear el archivo de destino." << endl;
+        return;
+    }
+
+    int registrosGuardados = 0;
+
+    // Recorremos la matriz 200x200 buscando celdas ocupadas
+    for (int x = 0; x < FILAS; x++)
+    {
+        for (int y = 0; y < COLUMNAS; y++)
+        {
+            if (memoria[x][y].celdaOcupada)
+            {
+                // Convertimos de Orden (RAM) a OrdenArchivo (Disco)
+                OrdenArchivo reg;
+                reg.x = x;
+                reg.y = y;
+                reg.espera = memoria[x][y].espera;
+                reg.soltarGranada1 = memoria[x][y].soltarGranada1;
+                reg.soltarGranada2 = memoria[x][y].soltarGranada2;
+                reg.ataqueKamikaze = memoria[x][y].ataqueKamikaze;
+                reg.aterrizaje = memoria[x][y].aterrizaje;
+                reg.despegue = memoria[x][y].despegue;
+                reg.siguientex = memoria[x][y].siguientex;
+                reg.siguientey = memoria[x][y].siguientey;
+
+                // Guardamos el registro en el archivo binario
+                fwrite(&reg, sizeof(OrdenArchivo), 1, f3);
+                registrosGuardados++;
+            }
+        }
+    }
+
+    fclose(f3);
+    cout << "\nArchivo '" << nombreArc << "' creado con exito." << endl;
+    cout << "Se guardaron " << registrosGuardados << " registros en total." << endl;
+}
+    
 }
