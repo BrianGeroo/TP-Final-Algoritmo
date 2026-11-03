@@ -108,13 +108,13 @@ bool cargarArchivoEnMemoria(const char* rutaArchivo)
 
     if (cantDespegue != 1)
     {
-        cout << "ERROR: El archivo debe contener un único despegue."<<endl;
+        cout << "ERROR: El archivo debe contener exactamente un despegue."<<endl;
         return false;
     }
 
     if (cantFin != 1)
     {
-        cout << "ERROR: Debe existir un único aterrizaje o ataque kamikaze."<<endl;
+        cout << "ERROR: Debe existir exactamente un aterrizaje o ataque kamikaze."<<endl;
         return false;
     }
     
